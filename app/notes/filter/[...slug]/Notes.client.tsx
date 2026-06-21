@@ -13,7 +13,11 @@ import Pagination from "@/components/Pagination/Pagination";
 import Loader from "@/components/Loader/Loader";
 import { fetchNotes } from "@/lib/api";
 
-const NotesClient = () => {
+interface NotesClientProps {
+  tag?: string;
+}
+
+const NotesClient = ({ tag }: NotesClientProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,9 +26,10 @@ const NotesClient = () => {
   const closeModal = () => setIsModalOpen(false);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["notes", searchQuery, currentPage],
-    queryFn: () => fetchNotes(searchQuery, currentPage),
+    queryKey: ["notes", searchQuery, currentPage, tag],
+    queryFn: () => fetchNotes(searchQuery, currentPage, tag),
     placeholderData: keepPreviousData,
+    refetchOnMount: false,
   });
   console.log("DATA:", data);
   console.log("ERROR:", isError);
