@@ -12,6 +12,7 @@ import NoteForm from "@/components/NoteForm/NoteForm";
 import Pagination from "@/components/Pagination/Pagination";
 import Loader from "@/components/Loader/Loader";
 import { fetchNotes } from "@/lib/api";
+import { NoteTag } from "@/types/note";
 
 interface NotesClientProps {
   tag?: string;
@@ -27,7 +28,8 @@ const NotesClient = ({ tag }: NotesClientProps) => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["notes", searchQuery, currentPage, tag],
-    queryFn: () => fetchNotes(searchQuery, currentPage, tag),
+    queryFn: () =>
+      fetchNotes(searchQuery, currentPage, tag as NoteTag | undefined),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });
